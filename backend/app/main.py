@@ -16,7 +16,7 @@ class MessageCreate(BaseModel):
 
 @app.get("/")
 def redirect_to_messages():
-    return RedirectResponse(url="/messages")
+    return RedirectResponse(url="/messages/")
 
 
 @app.get("/messages/")
