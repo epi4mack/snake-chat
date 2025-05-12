@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, Response
 from sqlalchemy.orm import Session
 from app.models import Base, Message, get_db, engine
 from pydantic import BaseModel
@@ -25,7 +25,13 @@ def get_messages(db: Session = Depends(get_db)):
 
 @app.get("/messages/{username}/")
 def get_messages_by_user(username: str, db: Session = Depends(get_db)):
-    return db.query(Message).filter(Message.name == username).all()
+    messages = db.query(Message).filter(Message.name == username).all()
+
+    html_content = ""
+    for msg in messages:
+        html_content += f"<b>{msg.name}:</b> {msg.text}<br>"
+
+    return Response(content=html_content, media_type="text/html")
 
 
 @app.post("/messages/")
