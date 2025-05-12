@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Depends, Response
+from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 from app.models import Base, Message, get_db, engine
 from pydantic import BaseModel
@@ -14,8 +15,8 @@ class MessageCreate(BaseModel):
 
 
 @app.get("/")
-def read_root():
-    return {"message": "SnakeChat v1.0"}
+def redirect_to_messages():
+    return RedirectResponse(url="/messages/")
 
 
 @app.get("/messages/")
